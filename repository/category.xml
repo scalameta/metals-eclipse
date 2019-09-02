@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/lsp.scala.feature_0.0.1.qualifier.jar" id="lsp.scala.feature" version="0.0.1.qualifier">
+      <category name="com.idiomaticsoft.scala.lsp.category"/>
+   </feature>
+   <category-def name="com.idiomaticsoft.scala.lsp.category" label="Scala LSP Eclipse Plugin">
+      <description>
+         Enables development of scala applications in eclipse.
+      </description>
+   </category-def>
+   <repository-reference location="http://download.eclipse.org/releases/2019-03/" enabled="true" />
+</site>

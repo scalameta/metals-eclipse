@@ -1,0 +1,7 @@
+bin
+target
+.bloop
+.settings
+.metals
+.externalToolBuilders
+*.swp

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            file-extensions="scala"
+            id="com.idiomaticsoft.scala.lsp.scalaFiletype"
+            name="Scala"
+            priority="normal">
+      </content-type>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+     <editorContentTypeBinding
+        contentTypeId="com.idiomaticsoft.scala.lsp.scalaFiletype"
+        default="true"
+        editorId="org.eclipse.ui.genericeditor.GenericEditor">
+   		</editorContentTypeBinding>
+   </extension>
+	<extension point="org.eclipse.debug.core.processFactories">
+	   <processFactory
+	           id="com.idiomaticsoft.lsp.scala.metalsprocess"
+	           class="com.idiomaticsoft.lsp.scala.edit.MetalsProcessFactory">
+	   </processFactory>
+	 </extension>
+
+   <extension
+         point="org.eclipse.tm4e.registry.grammars">
+      <grammar
+            path="grammar/scala.tmLanguage.json"
+            scopeName="source.scala">
+      </grammar>
+      <scopeNameContentTypeBinding
+            contentTypeId="com.idiomaticsoft.scala.lsp.scalaFiletype"
+            scopeName="source.scala">
+      </scopeNameContentTypeBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.genericeditor.presentationReconcilers">
+      <presentationReconciler
+            class="org.eclipse.tm4e.ui.text.TMPresentationReconciler"
+            contentType="com.idiomaticsoft.scala.lsp.scala">
+      </presentationReconciler>
+   </extension>
+   <extension
+         point="org.eclipse.lsp4e.languageServer">
+     <server
+        class="com.idiomaticsoft.lsp.scala.edit.MetalConnectionProvider"
+        id="com.idiomaticsoft.lsp.scala.metalsLS"
+        label="Scala Metals">
+      </server>
+      <contentTypeMapping
+            contentType="com.idiomaticsoft.scala.lsp.scalaFiletype"
+            id="com.idiomaticsoft.lsp.scala.metalsLS">
+      </contentTypeMapping>
+   </extension>
+    <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+   <launchConfigurationType
+      id="com.idiomaticsoft.lsp.scala.languageServer.launchConfType"
+      delegate="com.idiomaticsoft.lsp.scala.metals.MetalsLaunchConfigurationDelegate"
+      modes="run"
+      category="org.eclipse.ui.externaltools"
+      name="Metals Language Server">
+   </launchConfigurationType>
+ 	</extension>
+ 	<extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            type="com.idiomaticsoft.lsp.scala.languageServer.launchConfType"
+            class="com.idiomaticsoft.lsp.scala.metals.MetalsLanguageServerTabGroup"
+            id="com.idiomaticsoft.lsp.scala..launchConfigurationTabGroup.metalsServer"
+            bannerImage="icons/full/etool16/scalameta-logo.png">
+            <launchMode
+                  mode="run"
+                  description="%localJavaApplicationTabGroupDescription.run">
+            </launchMode>
+      </launchConfigurationTabGroup>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            icon="icons/full/etools/scalameta-logo.png"
+            configTypeID="com.idiomaticsoft.lsp.scala.languageServer.launchConfType"
+            id="com.idiomaticsoft.lsp.scala.languageServerImage.launchConfType">
+      </launchConfigurationTypeImage>
+   </extension>
+</plugin>
