@@ -18,6 +18,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<scala.version>2.12.8</scala.version>
+		<maven.home>2.12.8</maven.home>
 	</properties>
 
 	<dependencies>
@@ -54,7 +56,7 @@
 			<plugin>
 				<groupId>net.alchim31.maven</groupId>
 				<artifactId>scala-maven-plugin</artifactId>
-				<version>3.3.2</version>
+				<version>4.0.2</version>
 				<executions>
 					<execution>
 						<goals>
@@ -65,7 +67,21 @@
 					</execution>
 				</executions>
 				<configuration>
+				    <compilerPlugins>
+				        <compilerPlugin>
+				            <groupId>org.scalameta</groupId>
+				            <artifactId>semanticdb-scalac_${scala.version}</artifactId>
+				            <version>4.2.2</version>
+				        </compilerPlugin>
+				    </compilerPlugins>
 					<scalaVersion>2.12.8</scalaVersion>
+					<args>
+				        <arg>-P:semanticdb:synthetics:on</arg>
+				        <arg>-P:semanticdb:failures:warning</arg>
+				        <arg>-P:semanticdb:sourceroot:${maven.multiModuleProjectDirectory}</arg>
+				        <arg>-Yrangepos</arg>
+				        <arg>-Xplugin-require:semanticdb</arg>
+					</args>
 				</configuration>
 			</plugin>
 			<plugin>
