@@ -15,6 +15,10 @@ To build:
 In you eclipse installation go to install new software and point the repository to:
 
     metals-eclipse/repository/target/repository
+   
+# Import projects
+
+Check the website: http://scalameta.org/metals-eclipse/
 
 # Also
 
