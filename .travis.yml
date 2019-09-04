@@ -2,17 +2,13 @@ language: scala
 
 stages:
   - name: build
-  - name: release
-    if: (branch = master AND tag IS present)
 
 jobs:
   include:
     - stage: build
       script:
-        - mvn clean verify -f parent/pom.xml
-    - stage: release
-      script:
         - mvn clean install -f parent/pom.xml
+      before_deploy:
         - cp -R repository/target/repository update
       deploy:
         provider: pages
@@ -22,3 +18,4 @@ jobs:
         local_dir: update
         on:
           branch: master
+          tags: true
