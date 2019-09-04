@@ -1,0 +1,11 @@
+language: scala
+
+stages:
+  - name: build
+
+jobs:
+  - include:
+    - stage: build
+      script:
+        - mvn clean verify
+
