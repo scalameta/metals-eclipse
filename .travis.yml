@@ -9,13 +9,14 @@ jobs:
       script:
         - mvn clean install -f parent/pom.xml
       before_deploy:
-        - cp -R repository/target/repository update
+        - mkdir repo
+        - cp -R repository/target/repository repo/update
       deploy:
         provider: pages
         skip_cleanup: true
         github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
         keep_history: false
-        local_dir: update
+        local_dir: repo
         on:
           branch: master
           tags: true
