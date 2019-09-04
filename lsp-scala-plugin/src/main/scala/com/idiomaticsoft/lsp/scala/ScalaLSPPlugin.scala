@@ -54,7 +54,7 @@ class ScalaLSPPlugin extends AbstractUIPlugin {
 		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, "scala.meta.metals.Main")
 		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, false)
 		wc.setAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT, false)
-		val vmParams = "-XX:+UseG1GC -XX:+UseStringDeduplication -Xss4m -Xms100m -Xmx2G"
+		val vmParams = "-XX:+UseG1GC -XX:+UseStringDeduplication -Xss4m -Xms100m -Xmx2G -Dmetals.http=true"
 		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, wc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, vmParams))
 		wc.setAttribute(DebugPlugin.ATTR_PROCESS_FACTORY_ID,"com.idiomaticsoft.lsp.scala.metalsprocess")
 		val config = wc.doSave()
