@@ -10,16 +10,17 @@ To build:
     $ cd metals-eclipse/parent
     $ mvn clean install
 
-# Use
+# Release procedure
 
-In you eclipse installation go to install new software and point the repository to:
+Do the following steps:
 
-    metals-eclipse/repository/target/repository
-   
-# Import projects
+    $ cd metals-eclipse/parent
+    $ mvn org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=<release version>
+    $ git commit -a -m "Bump version to <release version>"
+    $ git tag -a v< version>
+    $ git push --tags origin master
+    $ mvn org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=<new version>-SNAPSHOT
+    $ git commit -a -m "Bump version to <new version>-SNAPSHOT"
 
-Check the website: http://scalameta.org/metals-eclipse/
-
-# Also
-
-You can use metals-eclipse to develop metals-eclipse. Documentation coming soon...
+The new version will automatically be pushed to the repository and be available
+to download.
