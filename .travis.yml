@@ -1,12 +1,10 @@
 language: scala
-script:
-  - mvn clean verify -f parent/pom.xml
 
 stages:
   - name: build
 
 jobs:
-  - include:
+  include:
     - stage: build
       script:
         - mvn clean verify -f parent/pom.xml
