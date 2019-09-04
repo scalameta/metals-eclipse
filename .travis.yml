@@ -1,7 +1,4 @@
 language: scala
-jdk:
-  - oraclejdk8
-
 script:
   - mvn clean verify -f parent/pom.xml
 
