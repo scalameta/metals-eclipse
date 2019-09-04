@@ -1,4 +1,9 @@
 language: scala
+jdk:
+  - oraclejdk8
+
+script:
+  - mvn clean verify -f parent/pom.xml
 
 stages:
   - name: build
@@ -7,5 +12,5 @@ jobs:
   - include:
     - stage: build
       script:
-        - mvn clean verify
+        - mvn clean verify -f parent/pom.xml
 
