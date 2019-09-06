@@ -21,6 +21,7 @@ Do the following steps:
     $ git push --tags origin master
     $ mvn org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=<new version>-SNAPSHOT
     $ git commit -a -m "Bump version to <new version>-SNAPSHOT"
+    $ git push origin master
 
 The new version will automatically be pushed to the repository and be available
 to download.
