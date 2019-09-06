@@ -22,19 +22,38 @@ import org.eclipse.core.runtime.ICoreRunnable
 import org.eclipse.core.runtime.IProgressMonitor
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.CountDownLatch
+import org.eclipse.core.runtime.NullProgressMonitor
+import com.idiomaticsoft.lsp.scala.metals.MetalsLanguageClientImpl
+import com.idiomaticsoft.lsp.scala.metals.MetalsStatusBar 
+import com.idiomaticsoft.lsp.scala.metals.MetalsStatusParams
+import org.eclipse.swt.widgets.Display
 
 
 object ScalaLSPPlugin {
 
   @volatile private var plugin: ScalaLSPPlugin = _
+
+  @volatile private var statusBar: MetalsStatusBar = _
+
   def apply(): ScalaLSPPlugin = plugin
+
+  def registerStatusBar(statusBar: MetalsStatusBar): Unit = {
+	this.statusBar = statusBar
+  }
+
+  def setStatusBar(status: MetalsStatusParams) = {
+	Display.getDefault().syncExec(() => { 
+		if (Option(statusBar.label).isDefined) {
+			statusBar.label.setText(status.text)
+			statusBar.label.setToolTipText(status.tooltip)
+		}
+	})
+  }
 
 } 
 
 class ScalaLSPPlugin extends AbstractUIPlugin {
 
-
-  @volatile var job: Job = null
 
   val launchedJob = new AtomicBoolean(false)
 
@@ -54,32 +73,26 @@ class ScalaLSPPlugin extends AbstractUIPlugin {
 		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, "scala.meta.metals.Main")
 		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, false)
 		wc.setAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT, false)
-		val vmParams = "-XX:+UseG1GC -XX:+UseStringDeduplication -Xss4m -Xms100m -Xmx2G -Dmetals.http=true"
+		val vmParams = "-XX:+UseG1GC -XX:+UseStringDeduplication -Xss4m -Xms100m -Xmx2G -Dmetals.http=true -Dmetals.status-bar=on -Dmetals.icons=unicode"
 		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, wc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, vmParams))
 		wc.setAttribute(DebugPlugin.ATTR_PROCESS_FACTORY_ID,"com.idiomaticsoft.lsp.scala.metalsprocess")
 		val config = wc.doSave()
-		job = Job.create("Running Metals server", new ICoreRunnable {
-			def run(monitor: IProgressMonitor) {
-				launch = config.launch(ILaunchManager.RUN_MODE, monitor)
-			}
-		})	
-		job.schedule()	
+		launch = config.launch(ILaunchManager.RUN_MODE, new NullProgressMonitor())
   }
 
   def processForCommand(): IProcess = {
 	if (Option(launch).isDefined && launch.getProcesses().toList.find(x => !x.isTerminated()).isEmpty) {
 		if (launchedJob.compareAndSet(true, false)) {
-			println("Resetting latch")
 			scheduledJob = new CountDownLatch(1)
 		}
 	}
-	if (!launchedJob.getAndSet(true)) {
+	if (!launchedJob.getAndSet(true)) { 
 		launchJob()
 		scheduledJob.countDown()
 	}
 	scheduledJob.await()
-	job.join()
 	val someProcess = launch.getProcesses().toList.find(x => !x.isTerminated())
 	someProcess.getOrElse(null) 
+
   }
 }

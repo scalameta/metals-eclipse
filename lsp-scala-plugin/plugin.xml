@@ -48,6 +48,7 @@
          point="org.eclipse.lsp4e.languageServer">
      <server
         class="com.idiomaticsoft.lsp.scala.edit.MetalConnectionProvider"
+        clientImpl="com.idiomaticsoft.lsp.scala.metals.MetalsLanguageClientImpl"
         id="com.idiomaticsoft.lsp.scala.metalsLS"
         label="Scala Metals">
       </server>
@@ -85,5 +86,20 @@
             configTypeID="com.idiomaticsoft.lsp.scala.languageServer.launchConfType"
             id="com.idiomaticsoft.lsp.scala.languageServerImage.launchConfType">
       </launchConfigurationTypeImage>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.eclipse.ui.trim.status">
+         <toolbar
+               id="com.idiomaticsof.lsp.scala.metals.toolbar"
+               label="Metals Toolbar">
+            <control
+                  class="com.idiomaticsoft.lsp.scala.metals.MetalsStatusBar"
+                  id="com.idiomaticsoft.lsp.scala.metals.statusbar">
+            </control>
+         </toolbar>
+      </menuContribution>
    </extension>
 </plugin>

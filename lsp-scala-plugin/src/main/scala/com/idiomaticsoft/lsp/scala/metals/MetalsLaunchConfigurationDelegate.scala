@@ -23,7 +23,7 @@ class MetalsLaunchConfigurationDelegate extends JavaLaunchDelegate {
 						pMonitor: IProgressMonitor): Unit = {
 		val monitor = if (Option(pMonitor).isEmpty) new NullProgressMonitor else pMonitor
 		try {
-			monitor.worked(1)
+			monitor.worked(1) 
 			val wc = configuration.getWorkingCopy()
 			import coursier._
 			val fetch = Fetch()
@@ -34,7 +34,7 @@ class MetalsLaunchConfigurationDelegate extends JavaLaunchDelegate {
 				val entry = JavaRuntime.newArchiveRuntimeClasspathEntry(x)
 				entry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES)
 				entry.getMemento()
-			}).toList.asJava
+			}).toList.asJava 
 
 			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, classPathElements)
 			wc.doSave()

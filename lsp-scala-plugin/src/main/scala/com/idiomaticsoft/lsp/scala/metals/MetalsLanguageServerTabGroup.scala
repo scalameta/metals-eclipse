@@ -20,6 +20,4 @@ class MetalsLanguageServerTabGroup extends AbstractLaunchConfigurationTabGroup {
 		import collection.JavaConverters._
 		setTabs(tabs)
 	}
-
-
 }
