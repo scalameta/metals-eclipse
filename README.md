@@ -1,3 +1,7 @@
+[![Build
+Status](https://travis-ci.org/scalameta/metals-eclipse.svg?branch=master)](https://travis-ci.org/scalameta/metals-eclipse)
+
+
 # metals-eclipse
 
 Eclipse Scala LSP plugin for Metals (WIP)
