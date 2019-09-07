@@ -16,7 +16,7 @@ import org.eclipse.debug.core.model.IStreamsProxy2
 import org.eclipse.debug.internal.core.StreamsProxy
 import org.eclipse.debug.core.ILaunch
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy
-import org.eclipse.debug.core.ILaunchConfiguration
+import org.eclipse.debug.core.ILaunchConfiguration 
 import org.eclipse.core.runtime.jobs.Job
 import org.eclipse.core.runtime.ICoreRunnable
 import org.eclipse.core.runtime.IProgressMonitor
@@ -37,7 +37,7 @@ object ScalaLSPPlugin {
 
   def apply(): ScalaLSPPlugin = plugin
 
-  def registerStatusBar(statusBar: MetalsStatusBar): Unit = {
+  def registerStatusBar(statusBar: MetalsStatusBar): Unit = { 
 	this.statusBar = statusBar
   }
 
@@ -49,7 +49,6 @@ object ScalaLSPPlugin {
 		}
 	})
   }
-
 } 
 
 class ScalaLSPPlugin extends AbstractUIPlugin {
