@@ -218,22 +218,16 @@
    </license>
 
    <requires>
+      <import plugin="org.eclipse.tm4e.languageconfiguration"/>
+      <import plugin="org.eclipse.tm4e.ui"/>
       <import plugin="org.eclipse.lsp4e"/>
+      <import feature="org.eclipse.jdt" version="3.17.0.v20190307-0500"/>
       <import plugin="org.eclipse.ui.workbench" version="3.113.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jdt.launching" version="3.13.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.resources" version="3.13.300" match="greaterOrEqual"/>
       <import plugin="org.eclipse.debug.core" version="3.13.200" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.15.200" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jdt.debug.ui" version="3.10.200" match="greaterOrEqual"/>
-      <import feature="org.eclipse.jdt" version="3.17.0.v20190307-0500"/>
-      <import plugin="org.eclipse.debug.ui" version="3.14.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui" version="3.112.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.lsp4j" version="0.7.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.lsp4j.jsonrpc" version="0.7.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.tm4e.core" version="0.3.3" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.tm4e.languageconfiguration" version="0.3.3" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.tm4e.ui" version="0.3.3" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.tm4e.registry" version="0.3.3" match="greaterOrEqual"/>
    </requires>
 
    <plugin
