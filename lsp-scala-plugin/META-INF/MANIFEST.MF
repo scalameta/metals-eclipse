@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Scala
 Bundle-SymbolicName: com.idiomaticsof.lsp.scala;singleton:=true
-Bundle-Version: 0.0.4
+Bundle-Version: 0.0.5
 Require-Bundle: org.eclipse.tm4e.languageconfiguration,
  org.eclipse.tm4e.ui,
  org.eclipse.lsp4e,
