@@ -3,9 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Scala
 Bundle-SymbolicName: com.idiomaticsof.lsp.scala;singleton:=true
 Bundle-Version: 0.0.4.qualifier
-Require-Bundle: org.eclipse.tm4e.languageconfiguration,
- org.eclipse.tm4e.ui,
- org.eclipse.lsp4e,
+Require-Bundle: org.eclipse.lsp4e,
  org.eclipse.ui.workbench;bundle-version="3.113.0",
  org.eclipse.jdt.launching;bundle-version="3.13.0",
  org.eclipse.core.resources;bundle-version="3.13.300",
@@ -15,7 +13,11 @@ Require-Bundle: org.eclipse.tm4e.languageconfiguration,
  org.eclipse.debug.ui;bundle-version="3.14.0",
  org.eclipse.ui;bundle-version="3.112.0",
  org.eclipse.lsp4j;bundle-version="0.7.0",
- org.eclipse.lsp4j.jsonrpc;bundle-version="0.7.0"
+ org.eclipse.lsp4j.jsonrpc;bundle-version="0.7.0",
+ org.eclipse.tm4e.core;bundle-version="0.3.3",
+ org.eclipse.tm4e.languageconfiguration;bundle-version="0.3.3",
+ org.eclipse.tm4e.ui;bundle-version="0.3.3",
+ org.eclipse.tm4e.registry;bundle-version="0.3.3"
 Bundle-Activator: com.idiomaticsoft.lsp.scala.ScalaLSPPlugin
 Bundle-Vendor: Idiomaticsoft S.R.L.
 Bundle-ActivationPolicy: lazy
