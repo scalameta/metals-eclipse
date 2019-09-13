@@ -3,10 +3,6 @@
 <target includeMode="feature" name="eclipse-scala-lsp">
 	<locations>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-			<unit id="org.eclipse.lsp4e" version="0.11.0.201909061733"/>
-			<repository location="file:/Users/mundacho/git/lsp4e/repository/target/repository/"/>
-		</location>
-		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 			<unit id="org.eclipse.lsp4j" version="0.0.0"/>
 			<unit id="org.eclipse.lsp4j.jsonrpc" version="0.0.0"/>
 			<unit id="org.eclipse.lsp4j.debug" version="0.0.0"/>
@@ -41,6 +37,11 @@
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 			<repository location="http://download.eclipse.org/releases/2019-06/"/>
 			<unit id="tm-feature.feature.group" version="0.0.0"/>
+		</location>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+			<repository location="file:/Users/mundacho/git/lsp4e/repository/target/repository/"/>
+			<unit id="org.eclipse.lsp4e" version="0.12.0.201909132110"/>
+			<unit id="org.eclipse.lsp4e.debug" version="0.10.0.201909031808"/>
 		</location>
 	</locations>
 </target>
