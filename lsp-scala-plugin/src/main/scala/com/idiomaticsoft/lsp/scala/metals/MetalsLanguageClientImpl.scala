@@ -10,14 +10,20 @@ import org.eclipse.core.runtime.jobs.Job
 import org.eclipse.core.runtime.ICoreRunnable
 import org.eclipse.core.runtime.IProgressMonitor
 import org.eclipse.core.runtime.Status
+import com.idiomaticsoft.lsp.scala.metals.operations.status.MetalsStatusParams
+import com.idiomaticsoft.lsp.scala.metals.operations.slowtask.MetalsSlowTaskParams
+import com.idiomaticsoft.lsp.scala.metals.operations.slowtask.MetalsSlowTaskResult
+import com.idiomaticsoft.lsp.scala.metals.operations.treeview.TreeViewDidChangeParams
+import scala.concurrent.Future
+import scala.concurrent.forkjoin._
+import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class MetalsLanguageClientImpl extends LanguageClientImpl with MetalsLanguageClient {
 
 	override def metalsStatus(status: MetalsStatusParams) = {
 		ScalaLSPPlugin.setStatusBar(status)
 	}
-
-	
 
 	override def metalsSlowTask(param: MetalsSlowTaskParams): CompletableFuture[MetalsSlowTaskResult] = {
 		val f = new CompletableFuture[MetalsSlowTaskResult]
@@ -47,4 +53,12 @@ class MetalsLanguageClientImpl extends LanguageClientImpl with MetalsLanguageCli
 		metalsJob.schedule()
 		f
 	}
+	
+	override def treeViewDidChange(treeViewDidChangeParam: TreeViewDidChangeParams) = {
+		println("Setting nodes")
+		val controller = ScalaLSPPlugin().getTreeViewController()
+		Future.apply(controller.parentNodes = treeViewDidChangeParam.nodes)
+	}
+	
+	
 }

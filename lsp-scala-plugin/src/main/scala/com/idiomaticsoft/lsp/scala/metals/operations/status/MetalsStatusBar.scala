@@ -1,4 +1,4 @@
-package com.idiomaticsoft.lsp.scala.metals
+package com.idiomaticsoft.lsp.scala.metals.operations.status
 
 import org.eclipse.ui.menus.WorkbenchWindowControlContribution
 import org.eclipse.swt.widgets.{Composite, Control}
@@ -22,8 +22,6 @@ class MetalsStatusBar extends WorkbenchWindowControlContribution {
 		layout.`type` = SWT.HORIZONTAL
 		composite.setLayout(layout)
 		label = new Label(composite, SWT.NONE)
-		//val font = new Font(label.getDisplay(), new FontData("Courier", 12, SWT.NORMAL))
-		//label.setFont(font)
 		label.setText(" " * 100)
 		label 
 	} 

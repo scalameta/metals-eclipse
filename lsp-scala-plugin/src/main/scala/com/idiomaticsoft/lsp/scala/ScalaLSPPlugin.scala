@@ -24,9 +24,13 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.CountDownLatch
 import org.eclipse.core.runtime.NullProgressMonitor
 import com.idiomaticsoft.lsp.scala.metals.MetalsLanguageClientImpl
-import com.idiomaticsoft.lsp.scala.metals.MetalsStatusBar 
-import com.idiomaticsoft.lsp.scala.metals.MetalsStatusParams
+import com.idiomaticsoft.lsp.scala.metals.operations.status.MetalsStatusBar 
+import com.idiomaticsoft.lsp.scala.metals.operations.status.MetalsStatusParams
 import org.eclipse.swt.widgets.Display
+import com.idiomaticsoft.lsp.scala.metals.operations.treeview.mvc.MetalsTreeViewController
+import com.idiomaticsoft.lsp.scala.metals.operations.treeview.mvc.MetalsTreeViewControllerImpl
+import com.idiomaticsoft.lsp.scala.metals.MetaslServerInterface
+import org.eclipse.lsp4e.LanguageServiceAccessor
 
 
 object ScalaLSPPlugin {
@@ -35,6 +39,7 @@ object ScalaLSPPlugin {
 
   @volatile private var statusBar: MetalsStatusBar = _
 
+
   def apply(): ScalaLSPPlugin = plugin
 
   def registerStatusBar(statusBar: MetalsStatusBar): Unit = { 
@@ -42,7 +47,7 @@ object ScalaLSPPlugin {
   }
 
   def setStatusBar(status: MetalsStatusParams) = {
-	Display.getDefault().syncExec(() => { 
+	Display.getDefault().asyncExec(() => { 
 		if (Option(statusBar.label).isDefined) {
 			statusBar.label.setText(status.text)
 			statusBar.label.setToolTipText(status.tooltip)
@@ -53,6 +58,7 @@ object ScalaLSPPlugin {
 
 class ScalaLSPPlugin extends AbstractUIPlugin {
 
+  @volatile private var treeViewController: MetalsTreeViewController = _
 
   val launchedJob = new AtomicBoolean(false)
 
@@ -64,6 +70,25 @@ class ScalaLSPPlugin extends AbstractUIPlugin {
     ScalaLSPPlugin.plugin = this 
     super.start(context)
   }
+
+  def getTreeViewController(): MetalsTreeViewController = {
+	synchronized {
+		if (Option(treeViewController).isEmpty) {
+			treeViewController = new MetalsTreeViewControllerImpl
+		} 
+		treeViewController  
+	}
+  }
+
+  def getLanguageServer(): MetaslServerInterface = {
+	val ls = LanguageServiceAccessor.getActiveLanguageServers(_ => true)
+	if (!ls.isEmpty()) {
+		ls.get(0).asInstanceOf[MetaslServerInterface]
+	} else {
+		null
+	}
+  }
+
 
   def launchJob(): Unit = {
 		val manager = DebugPlugin.getDefault().getLaunchManager()

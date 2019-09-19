@@ -4,6 +4,7 @@ package com.idiomaticsoft.lsp.scala.edit
 import org.eclipse.lsp4e.server.StreamConnectionProvider
 import com.idiomaticsoft.lsp.scala.ScalaLSPPlugin
 import org.eclipse.debug.core.model.IProcess
+import com.idiomaticsoft.lsp.scala.metals.ExperimentalFeatures
 
 
 
@@ -23,5 +24,11 @@ class MetalConnectionProvider extends StreamConnectionProvider {
     process = Option(ScalaLSPPlugin().processForCommand().asInstanceOf[MetalsProcess])
   }
   def stop(): Unit = process.map(_.terminate())
+
+  override def getExperimentalFeaturesPOJO(): Object = {
+	val experimentalFeatures = new ExperimentalFeatures
+	experimentalFeatures.setTreeViewProvider(true)
+	experimentalFeatures
+  }
 
 }

@@ -47,10 +47,11 @@
    <extension
          point="org.eclipse.lsp4e.languageServer">
      <server
-        class="com.idiomaticsoft.lsp.scala.edit.MetalConnectionProvider"
-        clientImpl="com.idiomaticsoft.lsp.scala.metals.MetalsLanguageClientImpl"
-        id="com.idiomaticsoft.lsp.scala.metalsLS"
-        label="Scala Metals">
+           class="com.idiomaticsoft.lsp.scala.edit.MetalConnectionProvider"
+           clientImpl="com.idiomaticsoft.lsp.scala.metals.MetalsLanguageClientImpl"
+           id="com.idiomaticsoft.lsp.scala.metalsLS"
+           label="Scala Metals"
+           serverInterface="com.idiomaticsoft.lsp.scala.metals.MetaslServerInterface">
       </server>
       <contentTypeMapping
             contentType="com.idiomaticsoft.scala.lsp.scalaFiletype"
@@ -96,10 +97,20 @@
                id="com.idiomaticsof.lsp.scala.metals.toolbar"
                label="Metals Toolbar">
             <control
-                  class="com.idiomaticsoft.lsp.scala.metals.MetalsStatusBar"
+                  class="com.idiomaticsoft.lsp.scala.metals.operations.status.MetalsStatusBar"
                   id="com.idiomaticsoft.lsp.scala.metals.statusbar">
             </control>
          </toolbar>
       </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            class="com.idiomaticsoft.lsp.scala.metals.operations.treeview.mvc.MetalsTreeView"
+            id="com.idiomaticsof.lsp.scala.metals.treeview"
+            name="Metals Tree view"
+            restorable="true">
+      </view>
    </extension>
 </plugin>

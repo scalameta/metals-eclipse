@@ -4,7 +4,10 @@ import org.eclipse.lsp4j.services.LanguageClient
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest
 import java.util.concurrent.CompletableFuture
-
+import com.idiomaticsoft.lsp.scala.metals.operations.status.MetalsStatusParams
+import com.idiomaticsoft.lsp.scala.metals.operations.slowtask.MetalsSlowTaskParams
+import com.idiomaticsoft.lsp.scala.metals.operations.slowtask.MetalsSlowTaskResult
+import com.idiomaticsoft.lsp.scala.metals.operations.treeview.TreeViewDidChangeParams
 
 trait MetalsLanguageClient extends LanguageClient {
 	
@@ -14,5 +17,8 @@ trait MetalsLanguageClient extends LanguageClient {
 
 	@JsonRequest("metals/slowTask")
 	def metalsSlowTask(status: MetalsSlowTaskParams): CompletableFuture[MetalsSlowTaskResult]
-
+	
+	@JsonNotification("metals/treeViewDidChange")
+	def treeViewDidChange(treeViewDidChangeParam: TreeViewDidChangeParams)
+	
 }

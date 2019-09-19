@@ -1,11 +1,11 @@
-package com.idiomaticsoft.lsp.scala.metals
+package com.idiomaticsoft.lsp.scala.metals.operations.status
 
-class MetalsStatusParams(
-			var text: String,
-			var show: Boolean,
-			var hide: Boolean,
-			var tooltip: String, 
-			var command: String) {
+class MetalsStatusParams (
+			var text: String = null,
+			var show: Boolean = false,
+			var hide: Boolean = false,
+			var tooltip: String = null, 
+			var command: String = null) {
 			
 		def getText() = text
 		
