@@ -7,9 +7,8 @@ RELEASE_VERSION=${ARGV[0]}
 NEW_VERSION=${ARGV[1]}
 
 if [ $ARGC -eq 2 ]; then
-  cd metals-eclipse/parent
   mvn org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=$RELEASE_VERSION -f parent/pom.xml
-  git commit -a -m "Bump version to $NEW_VERSION"
+  git commit -a -m "Bump version to $RELEASE_VERSION"
   git tag -a v$RELEASE_VERSION
   git push --tags --force origin master
   mvn org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=$NEW_VERSION-SNAPSHOT -f parent/pom.xml 
