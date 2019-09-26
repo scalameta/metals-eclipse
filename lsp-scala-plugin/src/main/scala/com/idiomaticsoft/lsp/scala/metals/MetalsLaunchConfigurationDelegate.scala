@@ -27,7 +27,7 @@ class MetalsLaunchConfigurationDelegate extends JavaLaunchDelegate {
 			val wc = configuration.getWorkingCopy()
 			import coursier._
 			val fetch = Fetch()
-				  .addDependencies(dep"org.scalameta:metals_2.12:0.7.2")
+				  .addDependencies(dep"org.scalameta:metals_2.12:0.7.6")
 				  .run()
 			import collection.JavaConverters._
 			val classPathElements = fetch.map(x => new Path(x.toPath.toString())).map(x => {
