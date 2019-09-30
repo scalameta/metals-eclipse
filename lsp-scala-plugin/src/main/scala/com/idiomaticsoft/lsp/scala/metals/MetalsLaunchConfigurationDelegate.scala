@@ -43,5 +43,4 @@ class MetalsLaunchConfigurationDelegate extends JavaLaunchDelegate {
 			monitor.done()
 		}
 	}
-
 }

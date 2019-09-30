@@ -36,7 +36,8 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 			<repository location="http://download.eclipse.org/releases/2019-06/"/>
-			<unit id="tm-feature.feature.group" version="0.0.0"/>
+			<unit id="tm-feature.feature.group" version="0.3.3.201906111904"/>
+			<unit id="org.eclipse.gmf.feature.group" version="1.12.1.201905141505"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 			<repository location="file:/Users/mundacho/git/lsp4e/repository/target/repository/"/>

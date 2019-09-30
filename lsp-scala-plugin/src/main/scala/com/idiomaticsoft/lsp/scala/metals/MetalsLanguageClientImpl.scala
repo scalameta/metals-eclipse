@@ -55,9 +55,8 @@ class MetalsLanguageClientImpl extends LanguageClientImpl with MetalsLanguageCli
 	}
 	
 	override def treeViewDidChange(treeViewDidChangeParam: TreeViewDidChangeParams) = {
-		println("Setting nodes")
 		val controller = ScalaLSPPlugin().getTreeViewController()
-		Future.apply(controller.parentNodes = treeViewDidChangeParam.nodes)
+		Future.apply(controller.setParentNode(treeViewDidChangeParam.nodes))
 	}
 	
 	

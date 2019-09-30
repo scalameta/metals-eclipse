@@ -17,3 +17,11 @@ class TreeViewNodeCollapseDidChangeParams(
 	@BeanProperty var viewId: String = null,
 	@BeanProperty var nodeUri: String = null,
 	@BeanProperty var collapsed: Boolean = false)
+	
+class TreeViewVisibilityDidChangeParams(	
+	@BeanProperty var viewId: String = null,
+	@BeanProperty var visible: Boolean = false)
+	
+class MetalsTreeRevealResult(
+  @BeanProperty var viewId: String = null, 
+  @BeanProperty var uriChain: Array[String] = null)
