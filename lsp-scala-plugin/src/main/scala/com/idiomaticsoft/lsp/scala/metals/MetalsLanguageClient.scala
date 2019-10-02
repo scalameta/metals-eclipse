@@ -8,6 +8,7 @@ import com.idiomaticsoft.lsp.scala.metals.operations.status.MetalsStatusParams
 import com.idiomaticsoft.lsp.scala.metals.operations.slowtask.MetalsSlowTaskParams
 import com.idiomaticsoft.lsp.scala.metals.operations.slowtask.MetalsSlowTaskResult
 import com.idiomaticsoft.lsp.scala.metals.operations.treeview.TreeViewDidChangeParams
+import org.eclipse.lsp4j.ExecuteCommandParams
 
 trait MetalsLanguageClient extends LanguageClient {
 	
@@ -20,5 +21,9 @@ trait MetalsLanguageClient extends LanguageClient {
 	
 	@JsonNotification("metals/treeViewDidChange")
 	def treeViewDidChange(treeViewDidChangeParam: TreeViewDidChangeParams)
+	
+	
+	@JsonNotification("metals/executeClientCommand")
+	def executeClientCommand(executeCommandParams: ExecuteCommandParams)
 	
 }

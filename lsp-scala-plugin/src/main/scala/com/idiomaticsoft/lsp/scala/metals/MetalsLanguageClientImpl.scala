@@ -17,9 +17,22 @@ import com.idiomaticsoft.lsp.scala.metals.operations.treeview.TreeViewDidChangeP
 import scala.concurrent.Future
 import scala.concurrent.forkjoin._
 import scala.concurrent.ExecutionContext.Implicits.global
+import org.eclipse.lsp4j.ExecuteCommandParams
+import org.eclipse.swt.browser.Browser
+import org.eclipse.swt.widgets.Shell
+import org.eclipse.swt.widgets.Display
+import org.eclipse.swt.SWT
+import org.eclipse.ui.console.IConsoleConstants
+import org.eclipse.ui.PlatformUI
+import org.eclipse.ui.IPageLayout
+import org.eclipse.lsp4e.LSPEclipseUtils
+import org.eclipse.lsp4j.Location
 
 
 class MetalsLanguageClientImpl extends LanguageClientImpl with MetalsLanguageClient {
+
+	var shell: Shell = _
+	var browser:Browser = _
 
 	override def metalsStatus(status: MetalsStatusParams) = {
 		ScalaLSPPlugin.setStatusBar(status)
@@ -57,6 +70,42 @@ class MetalsLanguageClientImpl extends LanguageClientImpl with MetalsLanguageCli
 	override def treeViewDidChange(treeViewDidChangeParam: TreeViewDidChangeParams) = {
 		val controller = ScalaLSPPlugin().getTreeViewController()
 		Future.apply(controller.setParentNode(treeViewDidChangeParam.nodes))
+	}
+	
+	override def executeClientCommand(executeCommandParams: ExecuteCommandParams) = {
+		if (executeCommandParams.getCommand == "metals-doctor-run") {
+			println("Called " + executeCommandParams.getCommand)
+			shell = new Shell(Display.getCurrent())
+			browser = new Browser(shell, SWT.NONE );
+			browser.setText(executeCommandParams.getArguments().get(0).asInstanceOf[String])
+		} else if (executeCommandParams.getCommand == "metals-doctor-reload") {
+			println("Called " + executeCommandParams.getCommand)
+			if (shell.isEnabled()) {
+				browser.setText(executeCommandParams.getArguments().get(0).asInstanceOf[String])
+			}
+		} else if (executeCommandParams.getCommand == "metals-logs-toggle") {
+			Display.getCurrent().asyncExec(() => {
+				val id = IConsoleConstants.ID_CONSOLE_VIEW
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(id)
+			})
+		} else if (executeCommandParams.getCommand == "metals-diagnostics-focus") {
+			Display.getCurrent().asyncExec(() => {
+				val id = IPageLayout.ID_PROBLEM_VIEW
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(id)
+			})
+		} else if (executeCommandParams.getCommand == "metals-goto-location") {
+			val location = executeCommandParams.getArguments().get(0).asInstanceOf[Location]
+			Display.getCurrent().asyncExec(() => {
+				LSPEclipseUtils.openInEditor(location, PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage())
+			})
+		} else if (executeCommandParams.getCommand == "metals-echo-command") {
+			val commandId = executeCommandParams.getArguments().get(0).asInstanceOf[String]
+			val commandParams = new ExecuteCommandParams
+			commandParams.setCommand(commandId)
+			getLanguageServer().getWorkspaceService().executeCommand(commandParams)
+		} else {
+			println("Unknnown client command: " + executeCommandParams.getCommand)
+		} 
 	}
 	
 	

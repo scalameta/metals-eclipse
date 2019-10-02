@@ -42,6 +42,9 @@ import org.eclipse.swt.events.ExpandEvent
 import com.idiomaticsoft.lsp.scala.metals.operations.treeview.server.TreeViewVisibilityDidChangeParams
 import org.eclipse.jface.viewers.IStructuredSelection
 import org.eclipse.lsp4j.ExecuteCommandParams
+import org.eclipse.ui.console.IConsoleConstants
+import org.eclipse.ui.PlatformUI
+import org.eclipse.ui.IPageLayout
 
 class MetalsTreeView extends ViewPart {
 
@@ -86,6 +89,7 @@ class MetalsTreeView extends ViewPart {
 			override def widgetDefaultSelected(e: SelectionEvent) = {
 			}
 		})
+		
 		expandBar = new ExpandBar(parent, SWT.V_SCROLL | SWT.BORDER)
 		val barGridData = new GridData
 		barGridData.horizontalAlignment = GridData.FILL
@@ -123,7 +127,7 @@ class MetalsTreeView extends ViewPart {
 	 	val composite = new Composite (expandBar, SWT.NONE)
 		val treeViewer = createViewer(composite, viewId)
 		expandItem.setText(label);
-		expandItem.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y)
+		expandItem.setHeight(composite.computeSize(SWT.DEFAULT, 500).y)
 		expandItem.setControl(composite)
 		expandItem.setData(treeViewNode)
 		viewsTo.put(viewId, (expandItem, treeViewer))	
