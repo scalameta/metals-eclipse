@@ -1,41 +1,9 @@
 package com.idiomaticsoft.lsp.scala.metals.operations.status
+import scala.beans.BeanProperty
 
 class MetalsStatusParams (
-			var text: String = null,
-			var show: Boolean = false,
-			var hide: Boolean = false,
-			var tooltip: String = null, 
-			var command: String = null) {
-			
-		def getText() = text
-		
-		def getShow()= show
-		
-		def getHide() = hide
-		
-		def getTooltip() = tooltip
-		
-		def getCommand() = command
-		
-		def setText(text: String) = {
-			this.text = text
-		}
-		
-		def setShow(show: Boolean) = {
-			this.show = show
-		}
-		
-		def setHide(hide: Boolean) = {
-			this.hide = hide
-		}
-		
-		def setTooltip(tooltip: String) = {
-			this.tooltip = tooltip
-		}
-		
-		def setCommand(command: String) = {
-			this.command = command
-		}
-			
-}
- 
+			@BeanProperty var text: String = null,
+			@BeanProperty var show: Boolean = false,
+			@BeanProperty var hide: Boolean = false,
+			@BeanProperty var tooltip: String = null, 
+			@BeanProperty var command: String = null)
