@@ -9,6 +9,8 @@ import com.idiomaticsoft.lsp.scala.metals.operations.slowtask.MetalsSlowTaskPara
 import com.idiomaticsoft.lsp.scala.metals.operations.slowtask.MetalsSlowTaskResult
 import com.idiomaticsoft.lsp.scala.metals.operations.treeview.TreeViewDidChangeParams
 import org.eclipse.lsp4j.ExecuteCommandParams
+import com.idiomaticsoft.lsp.scala.metals.operations.inputbox.MetalsInputBoxParams
+import com.idiomaticsoft.lsp.scala.metals.operations.inputbox.MetalsInputBoxResult
 
 trait MetalsLanguageClient extends LanguageClient {
 	
@@ -25,5 +27,9 @@ trait MetalsLanguageClient extends LanguageClient {
 	
 	@JsonNotification("metals/executeClientCommand")
 	def executeClientCommand(executeCommandParams: ExecuteCommandParams)
+
+	@JsonNotification("metals/inputBox")
+	def inputBox(metalsInputBoxParams: MetalsInputBoxParams): CompletableFuture[MetalsInputBoxResult]
+	
 	
 }

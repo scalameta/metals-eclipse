@@ -27,6 +27,10 @@ import org.eclipse.ui.PlatformUI
 import org.eclipse.ui.IPageLayout
 import org.eclipse.lsp4e.LSPEclipseUtils
 import org.eclipse.lsp4j.Location
+import com.idiomaticsoft.lsp.scala.metals.operations.inputbox.MetalsInputBoxParams
+import org.eclipse.jface.dialogs.InputDialog
+import org.eclipse.jface.window.Window
+import com.idiomaticsoft.lsp.scala.metals.operations.inputbox.MetalsInputBoxResult
 
 
 class MetalsLanguageClientImpl extends LanguageClientImpl with MetalsLanguageClient {
@@ -108,5 +112,34 @@ class MetalsLanguageClientImpl extends LanguageClientImpl with MetalsLanguageCli
 		} 
 	}
 	
+	override def inputBox(metalsInputBoxParams: MetalsInputBoxParams) = {
+		val f = new CompletableFuture[MetalsInputBoxResult]
+		Display.getCurrent().asyncExec(() => {
+			val dialog = if (metalsInputBoxParams.getPassword()) {
+				new InputDialog(Display.getCurrent().getActiveShell(),
+					"Metals LSP",
+					metalsInputBoxParams.getPrompt(),
+					metalsInputBoxParams.getPlaceHolder(),
+					null) {
+						override def getInputTextStyle(): Int = {
+							super.getInputTextStyle() | SWT.PASSWORD
+						}
+					}
+			} else {
+				new InputDialog(Display.getCurrent().getActiveShell(),
+					"Metals LSP",
+					metalsInputBoxParams.getPrompt(),
+					metalsInputBoxParams.getPlaceHolder(),
+					null)
+			}
+			val result = dialog.open()
+			if (result == Window.OK) {
+				f.complete(new MetalsInputBoxResult(dialog.getValue(), false))
+			} else {
+				f.complete(new MetalsInputBoxResult(dialog.getValue(), true))
+			}
+		})
+		f
+	}
 	
 }
