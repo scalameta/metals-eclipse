@@ -42,6 +42,8 @@ trait MetalsTreeViewController  {
 	
 	def getChildren(treeViewNode: TreeViewNode): Array[TreeViewNode]
 	
+	def initView(): Unit
+	
 	def languageServer(): MetaslServerInterface
 }
 
@@ -52,11 +54,11 @@ class MetalsTreeViewControllerImpl extends MetalsTreeViewController {
 
 	val childToParent = new scala.collection.mutable.HashMap[String, TreeViewNode]
 
-	
+	var initialNodes: Array[TreeViewNode] = Array()
 	  
 	private var metalsTreeView: MetalsTreeView = _  
 	
-	override def parentNodes(viewId: String): List[TreeViewNode] = parentNodesMap(viewId).toList// parentNodesMap.keys.toList.sorted.map(parentNodesMap(_))
+	override def parentNodes(viewId: String): List[TreeViewNode] = parentNodesMap(viewId).toList
 
 	private def createUriChain(node: TreeViewNode, list: List[String]): List[String] = {
 		Option(node.getNodeUri()) match {
@@ -71,15 +73,19 @@ class MetalsTreeViewControllerImpl extends MetalsTreeViewController {
 				list
 		}
 	}
+	
+	override def initView(): Unit = {
+		setParentNode(initialNodes)
+	}
 
 	override def setParentNode(nodes: Array[TreeViewNode]): Unit = {
 		Display.getDefault().asyncExec(() =>
-			for {
+			(for {
 				theView <- Option(view)
-			} {
+			} yield {
 				for {
 					node <- nodes
-				} yield {
+				} {
 					(parentNodesMap.get(node.getViewId()), Option(node.getNodeUri()))  match {
 						case (None, None) => 
 							// this only happens with the top level values
@@ -99,9 +105,12 @@ class MetalsTreeViewControllerImpl extends MetalsTreeViewController {
 							// should not happen
 					}
 				}
+			}).getOrElse {
+				initialNodes = nodes
 			}
 		)
-	}	
+	}
+	
 	
 	def contentProvider(viewId: String): MetalsTreeContentProvider = {
 		new MetalsTreeContentProvider(this, languageServer(), metalsTreeView, viewId)

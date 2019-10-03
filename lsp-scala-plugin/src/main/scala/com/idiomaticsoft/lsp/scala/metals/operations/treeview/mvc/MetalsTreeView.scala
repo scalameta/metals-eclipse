@@ -114,6 +114,7 @@ class MetalsTreeView extends ViewPart {
 		parentView = parent
 		parentView.pack()
 		parentView.update()
+		controller.initView()
 	}
 	
 	def fillExpandBar(viewId: String, treeViewNodes: Array[TreeViewNode]) = {
@@ -204,6 +205,7 @@ class MetalsTreeView extends ViewPart {
 	
 	def expandBar(viewId:String) = viewsTo.get(viewId).map(_._1)
 	
-	override def setFocus(): Unit = {}
+	override def setFocus(): Unit = {
+	}
 
 }

@@ -31,12 +31,18 @@ import com.idiomaticsoft.lsp.scala.metals.operations.inputbox.MetalsInputBoxPara
 import org.eclipse.jface.dialogs.InputDialog
 import org.eclipse.jface.window.Window
 import com.idiomaticsoft.lsp.scala.metals.operations.inputbox.MetalsInputBoxResult
+import org.eclipse.swt.layout.FillLayout
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonParser
 
 
 class MetalsLanguageClientImpl extends LanguageClientImpl with MetalsLanguageClient {
 
 	var shell: Shell = _
 	var browser:Browser = _
+	
+	val parser = new JsonParser
 
 	override def metalsStatus(status: MetalsStatusParams) = {
 		ScalaLSPPlugin.setStatusBar(status)
@@ -78,28 +84,57 @@ class MetalsLanguageClientImpl extends LanguageClientImpl with MetalsLanguageCli
 	
 	override def executeClientCommand(executeCommandParams: ExecuteCommandParams) = {
 		if (executeCommandParams.getCommand == "metals-doctor-run") {
-			println("Called " + executeCommandParams.getCommand)
-			shell = new Shell(Display.getCurrent())
-			browser = new Browser(shell, SWT.NONE );
-			browser.setText(executeCommandParams.getArguments().get(0).asInstanceOf[String])
+			Display.getDefault().asyncExec(() => {
+				shell = new Shell(Display.getCurrent())
+				shell.setLayout(new FillLayout)
+				browser = new Browser(shell, SWT.NONE);
+				browser.setText(
+				"""
+					<html>
+					<head>
+						<title>Metals Doctor</title>
+					</head>
+					<body>
+				""" + 
+				parser.parse(executeCommandParams.getArguments().get(0).toString()).getAsString() +
+				"""
+					</body>
+					</html>
+				""")
+				shell.pack()
+				shell.setSize(400, 300)
+				shell.open()
+			})
 		} else if (executeCommandParams.getCommand == "metals-doctor-reload") {
-			println("Called " + executeCommandParams.getCommand)
-			if (shell.isEnabled()) {
-				browser.setText(executeCommandParams.getArguments().get(0).asInstanceOf[String])
+			if (Option(shell).map(_.isEnabled()).getOrElse(false)) {
+				browser.setText(
+					"""
+						<html>
+						<head>
+							<title>Metals Doctor</title>
+						</head>
+						<body>
+					""" + 
+					parser.parse(executeCommandParams.getArguments().get(0).toString()).getAsString() +
+					"""
+						</body>
+						</html>
+					""")
+				browser.refresh()
 			}
 		} else if (executeCommandParams.getCommand == "metals-logs-toggle") {
-			Display.getCurrent().asyncExec(() => {
+			Display.getDefault().asyncExec(() => {
 				val id = IConsoleConstants.ID_CONSOLE_VIEW
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(id)
 			})
 		} else if (executeCommandParams.getCommand == "metals-diagnostics-focus") {
-			Display.getCurrent().asyncExec(() => {
+			Display.getDefault().asyncExec(() => {
 				val id = IPageLayout.ID_PROBLEM_VIEW
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(id)
 			})
 		} else if (executeCommandParams.getCommand == "metals-goto-location") {
 			val location = executeCommandParams.getArguments().get(0).asInstanceOf[Location]
-			Display.getCurrent().asyncExec(() => {
+			Display.getDefault().asyncExec(() => {
 				LSPEclipseUtils.openInEditor(location, PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage())
 			})
 		} else if (executeCommandParams.getCommand == "metals-echo-command") {
@@ -114,7 +149,8 @@ class MetalsLanguageClientImpl extends LanguageClientImpl with MetalsLanguageCli
 	
 	override def inputBox(metalsInputBoxParams: MetalsInputBoxParams) = {
 		val f = new CompletableFuture[MetalsInputBoxResult]
-		Display.getCurrent().asyncExec(() => {
+		Display.getDefault().asyncExec(() => {
+			println("Hello!")
 			val dialog = if (metalsInputBoxParams.getPassword()) {
 				new InputDialog(Display.getCurrent().getActiveShell(),
 					"Metals LSP",
