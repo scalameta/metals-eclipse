@@ -8,5 +8,6 @@
          Enables development of scala applications in eclipse.
       </description>
    </category-def>
-   <repository-reference location="http://download.eclipse.org/releases/2019-03/" enabled="true" />
+   <repository-reference location="http://download.eclipse.org/releases/2019-09/" enabled="true" />
+   <repository-reference location="http://https://download.eclipse.org/lsp4e/releases/0.12.0/" enabled="true" />
 </site>
