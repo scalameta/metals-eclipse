@@ -36,146 +36,186 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 
+class MetalsLanguageClientImpl
+    extends LanguageClientImpl
+    with MetalsLanguageClient {
 
-class MetalsLanguageClientImpl extends LanguageClientImpl with MetalsLanguageClient {
+  var shell: Shell = _
+  var browser: Browser = _
 
-	var shell: Shell = _
-	var browser:Browser = _
-	
-	val parser = new JsonParser
+  val parser = new JsonParser
 
-	override def metalsStatus(status: MetalsStatusParams) = {
-		ScalaLSPPlugin.setStatusBar(status)
-	}
+  override def metalsStatus(status: MetalsStatusParams) = {
+    ScalaLSPPlugin.setStatusBar(status)
+  }
 
-	override def metalsSlowTask(param: MetalsSlowTaskParams): CompletableFuture[MetalsSlowTaskResult] = {
-		val f = new CompletableFuture[MetalsSlowTaskResult]
-		val startTime = System.currentTimeMillis()
-		val metalsJob = new Job(param.getMessage()) {
-				override def run(monitor: IProgressMonitor) = {
-					var isCanceled = false
-					var isFinished = false
-					while (!isCanceled && !f.isCancelled()) {
-						if (monitor.isCanceled()) {
-							f.complete(new MetalsSlowTaskResult(true))		
-							isCanceled = true
-						} else {
-							val currentTime = System.currentTimeMillis()
-							val elapsedTime = (currentTime - startTime)/1000
-							monitor.setTaskName(param.getMessage() + " (" + elapsedTime   + "s)")
-							Thread.sleep(500)
-						}
-					}
-					if (isCanceled) {
-						Status.CANCEL_STATUS
-					} else {
-						Status.OK_STATUS
-					}
-				}
-		}
-		metalsJob.schedule()
-		f
-	}
-	
-	override def treeViewDidChange(treeViewDidChangeParam: TreeViewDidChangeParams) = {
-		val controller = ScalaLSPPlugin().getTreeViewController()
-		Future.apply(controller.setParentNode(treeViewDidChangeParam.nodes))
-	}
-	
-	override def executeClientCommand(executeCommandParams: ExecuteCommandParams) = {
-		if (executeCommandParams.getCommand == "metals-doctor-run") {
-			Display.getDefault().asyncExec(() => {
-				shell = new Shell(Display.getCurrent())
-				shell.setLayout(new FillLayout)
-				browser = new Browser(shell, SWT.NONE);
-				browser.setText(
-				"""
+  override def metalsSlowTask(
+      param: MetalsSlowTaskParams
+  ): CompletableFuture[MetalsSlowTaskResult] = {
+    val f = new CompletableFuture[MetalsSlowTaskResult]
+    val startTime = System.currentTimeMillis()
+    val metalsJob = new Job(param.getMessage()) {
+      override def run(monitor: IProgressMonitor) = {
+        var isCanceled = false
+        var isFinished = false
+        while (!isCanceled && !f.isCancelled()) {
+          if (monitor.isCanceled()) {
+            f.complete(new MetalsSlowTaskResult(true))
+            isCanceled = true
+          } else {
+            val currentTime = System.currentTimeMillis()
+            val elapsedTime = (currentTime - startTime) / 1000
+            monitor.setTaskName(param.getMessage() + " (" + elapsedTime + "s)")
+            Thread.sleep(500)
+          }
+        }
+        if (isCanceled) {
+          Status.CANCEL_STATUS
+        } else {
+          Status.OK_STATUS
+        }
+      }
+    }
+    metalsJob.schedule()
+    f
+  }
+
+  override def treeViewDidChange(
+      treeViewDidChangeParam: TreeViewDidChangeParams
+  ) = {
+    val controller = ScalaLSPPlugin().getTreeViewController()
+    Future.apply(controller.setParentNode(treeViewDidChangeParam.nodes))
+  }
+
+  override def executeClientCommand(
+      executeCommandParams: ExecuteCommandParams
+  ) = {
+    if (executeCommandParams.getCommand == "metals-doctor-run") {
+      Display
+        .getDefault()
+        .asyncExec(() => {
+          shell = new Shell(Display.getCurrent())
+          shell.setLayout(new FillLayout)
+          browser = new Browser(shell, SWT.NONE);
+          browser.setText(
+            """
 					<html>
 					<head>
 						<title>Metals Doctor</title>
 					</head>
 					<body>
-				""" + 
-				parser.parse(executeCommandParams.getArguments().get(0).toString()).getAsString() +
-				"""
+				""" +
+              parser
+                .parse(executeCommandParams.getArguments().get(0).toString())
+                .getAsString() +
+              """
 					</body>
 					</html>
-				""")
-				shell.pack()
-				shell.setSize(400, 300)
-				shell.open()
-			})
-		} else if (executeCommandParams.getCommand == "metals-doctor-reload") {
-			if (Option(shell).map(_.isEnabled()).getOrElse(false)) {
-				browser.setText(
-					"""
+				"""
+          )
+          shell.pack()
+          shell.setSize(400, 300)
+          shell.open()
+        })
+    } else if (executeCommandParams.getCommand == "metals-doctor-reload") {
+      if (Option(shell).map(_.isEnabled()).getOrElse(false)) {
+        browser.setText(
+          """
 						<html>
 						<head>
 							<title>Metals Doctor</title>
 						</head>
 						<body>
-					""" + 
-					parser.parse(executeCommandParams.getArguments().get(0).toString()).getAsString() +
-					"""
+					""" +
+            parser
+              .parse(executeCommandParams.getArguments().get(0).toString())
+              .getAsString() +
+            """
 						</body>
 						</html>
-					""")
-				browser.refresh()
-			}
-		} else if (executeCommandParams.getCommand == "metals-logs-toggle") {
-			Display.getDefault().asyncExec(() => {
-				val id = IConsoleConstants.ID_CONSOLE_VIEW
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(id)
-			})
-		} else if (executeCommandParams.getCommand == "metals-diagnostics-focus") {
-			Display.getDefault().asyncExec(() => {
-				val id = IPageLayout.ID_PROBLEM_VIEW
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(id)
-			})
-		} else if (executeCommandParams.getCommand == "metals-goto-location") {
-			val location = executeCommandParams.getArguments().get(0).asInstanceOf[Location]
-			Display.getDefault().asyncExec(() => {
-				LSPEclipseUtils.openInEditor(location, PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage())
-			})
-		} else if (executeCommandParams.getCommand == "metals-echo-command") {
-			val commandId = executeCommandParams.getArguments().get(0).asInstanceOf[String]
-			val commandParams = new ExecuteCommandParams
-			commandParams.setCommand(commandId)
-			getLanguageServer().getWorkspaceService().executeCommand(commandParams)
-		} else {
-			println("Unknnown client command: " + executeCommandParams.getCommand)
-		} 
-	}
-	
-	override def inputBox(metalsInputBoxParams: MetalsInputBoxParams) = {
-		val f = new CompletableFuture[MetalsInputBoxResult]
-		Display.getDefault().asyncExec(() => {
-			println("Hello!")
-			val dialog = if (metalsInputBoxParams.getPassword()) {
-				new InputDialog(Display.getCurrent().getActiveShell(),
-					"Metals LSP",
-					metalsInputBoxParams.getPrompt(),
-					metalsInputBoxParams.getPlaceHolder(),
-					null) {
-						override def getInputTextStyle(): Int = {
-							super.getInputTextStyle() | SWT.PASSWORD
-						}
-					}
-			} else {
-				new InputDialog(Display.getCurrent().getActiveShell(),
-					"Metals LSP",
-					metalsInputBoxParams.getPrompt(),
-					metalsInputBoxParams.getPlaceHolder(),
-					null)
-			}
-			val result = dialog.open()
-			if (result == Window.OK) {
-				f.complete(new MetalsInputBoxResult(dialog.getValue(), false))
-			} else {
-				f.complete(new MetalsInputBoxResult(dialog.getValue(), true))
-			}
-		})
-		f
-	}
-	
+					"""
+        )
+        browser.refresh()
+      }
+    } else if (executeCommandParams.getCommand == "metals-logs-toggle") {
+      Display
+        .getDefault()
+        .asyncExec(() => {
+          val id = IConsoleConstants.ID_CONSOLE_VIEW
+          PlatformUI
+            .getWorkbench()
+            .getActiveWorkbenchWindow()
+            .getActivePage()
+            .showView(id)
+        })
+    } else if (executeCommandParams.getCommand == "metals-diagnostics-focus") {
+      Display
+        .getDefault()
+        .asyncExec(() => {
+          val id = IPageLayout.ID_PROBLEM_VIEW
+          PlatformUI
+            .getWorkbench()
+            .getActiveWorkbenchWindow()
+            .getActivePage()
+            .showView(id)
+        })
+    } else if (executeCommandParams.getCommand == "metals-goto-location") {
+      val location =
+        executeCommandParams.getArguments().get(0).asInstanceOf[Location]
+      Display
+        .getDefault()
+        .asyncExec(() => {
+          LSPEclipseUtils.openInEditor(
+            location,
+            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+          )
+        })
+    } else if (executeCommandParams.getCommand == "metals-echo-command") {
+      val commandId =
+        executeCommandParams.getArguments().get(0).asInstanceOf[String]
+      val commandParams = new ExecuteCommandParams
+      commandParams.setCommand(commandId)
+      getLanguageServer().getWorkspaceService().executeCommand(commandParams)
+    } else {
+      println("Unknnown client command: " + executeCommandParams.getCommand)
+    }
+  }
+
+  override def inputBox(metalsInputBoxParams: MetalsInputBoxParams) = {
+    val f = new CompletableFuture[MetalsInputBoxResult]
+    Display
+      .getDefault()
+      .asyncExec(() => {
+        println("Hello!")
+        val dialog = if (metalsInputBoxParams.getPassword()) {
+          new InputDialog(
+            Display.getCurrent().getActiveShell(),
+            "Metals LSP",
+            metalsInputBoxParams.getPrompt(),
+            metalsInputBoxParams.getPlaceHolder(),
+            null
+          ) {
+            override def getInputTextStyle(): Int = {
+              super.getInputTextStyle() | SWT.PASSWORD
+            }
+          }
+        } else {
+          new InputDialog(
+            Display.getCurrent().getActiveShell(),
+            "Metals LSP",
+            metalsInputBoxParams.getPrompt(),
+            metalsInputBoxParams.getPlaceHolder(),
+            null
+          )
+        }
+        val result = dialog.open()
+        if (result == Window.OK) {
+          f.complete(new MetalsInputBoxResult(dialog.getValue(), false))
+        } else {
+          f.complete(new MetalsInputBoxResult(dialog.getValue(), true))
+        }
+      })
+    f
+  }
+
 }

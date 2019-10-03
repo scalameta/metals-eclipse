@@ -13,23 +13,23 @@ import com.idiomaticsoft.lsp.scala.metals.operations.inputbox.MetalsInputBoxPara
 import com.idiomaticsoft.lsp.scala.metals.operations.inputbox.MetalsInputBoxResult
 
 trait MetalsLanguageClient extends LanguageClient {
-	
-	
-	@JsonNotification("metals/status")
-	def metalsStatus(status: MetalsStatusParams): Unit
 
-	@JsonRequest("metals/slowTask")
-	def metalsSlowTask(status: MetalsSlowTaskParams): CompletableFuture[MetalsSlowTaskResult]
-	
-	@JsonNotification("metals/treeViewDidChange")
-	def treeViewDidChange(treeViewDidChangeParam: TreeViewDidChangeParams)
-	
-	
-	@JsonNotification("metals/executeClientCommand")
-	def executeClientCommand(executeCommandParams: ExecuteCommandParams)
+  @JsonNotification("metals/status")
+  def metalsStatus(status: MetalsStatusParams): Unit
 
-	@JsonNotification("metals/inputBox")
-	def inputBox(metalsInputBoxParams: MetalsInputBoxParams): CompletableFuture[MetalsInputBoxResult]
-	
-	
+  @JsonRequest("metals/slowTask")
+  def metalsSlowTask(
+      status: MetalsSlowTaskParams
+  ): CompletableFuture[MetalsSlowTaskResult]
+
+  @JsonNotification("metals/treeViewDidChange")
+  def treeViewDidChange(treeViewDidChangeParam: TreeViewDidChangeParams)
+  @JsonNotification("metals/executeClientCommand")
+  def executeClientCommand(executeCommandParams: ExecuteCommandParams)
+
+  @JsonNotification("metals/inputBox")
+  def inputBox(
+      metalsInputBoxParams: MetalsInputBoxParams
+  ): CompletableFuture[MetalsInputBoxResult]
+
 }

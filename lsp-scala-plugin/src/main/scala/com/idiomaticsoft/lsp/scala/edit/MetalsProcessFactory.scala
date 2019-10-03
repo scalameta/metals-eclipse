@@ -7,11 +7,13 @@ import org.eclipse.debug.core.model.IProcess
 
 class MetalsProcessFactory extends IProcessFactory {
 
-	override def newProcess(launch: ILaunch,
-							process: Process, 
-							label: String, 
-							attributes: ju.Map[String,String]): IProcess = {
-		new	MetalsProcess(launch, process, label, attributes)	
-							}
+  override def newProcess(
+      launch: ILaunch,
+      process: Process,
+      label: String,
+      attributes: ju.Map[String, String]
+  ): IProcess = {
+    new MetalsProcess(launch, process, label, attributes)
+  }
 
 }

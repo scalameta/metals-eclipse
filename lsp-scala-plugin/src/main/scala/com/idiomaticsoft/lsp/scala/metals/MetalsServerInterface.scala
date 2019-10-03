@@ -16,19 +16,29 @@ import org.eclipse.lsp4j.ExecuteCommandParams
 
 trait MetaslServerInterface extends LanguageServer {
 
-	@JsonRequest(value="metals/treeViewChildren")
-	def treeViewChildren(treeViewChildrenParams: TreeViewChildrenParams):CompletableFuture[TreeViewChildrenResult]
+  @JsonRequest(value = "metals/treeViewChildren")
+  def treeViewChildren(
+      treeViewChildrenParams: TreeViewChildrenParams
+  ): CompletableFuture[TreeViewChildrenResult]
 
-	@JsonRequest(value="metals/treeViewParent")
-	def treeViewParent(treeViewChildrenParams: TreeViewChildrenParams):CompletableFuture[TreeViewParentResult]
+  @JsonRequest(value = "metals/treeViewParent")
+  def treeViewParent(
+      treeViewChildrenParams: TreeViewChildrenParams
+  ): CompletableFuture[TreeViewParentResult]
 
-	@JsonNotification(value="metals/treeViewNodeCollapseDidChange")
-	def treeViewNodeCollapseDidChange(treeViewVisibilityDidChangeParams: TreeViewNodeCollapseDidChangeParams)
-	
-	@JsonNotification(value="metals/treeViewVisibilityDidChange")
-	def treeViewVisibilityDidChange(treeViewVisibilityDidChangeParams: TreeViewVisibilityDidChangeParams)
-	
-	@JsonRequest(value="metals/treeViewReveal")
-	def treeViewReveal(textDocumentPositionParams: TextDocumentPositionParams): CompletableFuture[MetalsTreeRevealResult]
+  @JsonNotification(value = "metals/treeViewNodeCollapseDidChange")
+  def treeViewNodeCollapseDidChange(
+      treeViewVisibilityDidChangeParams: TreeViewNodeCollapseDidChangeParams
+  )
+
+  @JsonNotification(value = "metals/treeViewVisibilityDidChange")
+  def treeViewVisibilityDidChange(
+      treeViewVisibilityDidChangeParams: TreeViewVisibilityDidChangeParams
+  )
+
+  @JsonRequest(value = "metals/treeViewReveal")
+  def treeViewReveal(
+      textDocumentPositionParams: TextDocumentPositionParams
+  ): CompletableFuture[MetalsTreeRevealResult]
 
 }
