@@ -8,6 +8,29 @@
          Enables development of scala applications in eclipse.
       </description>
    </category-def>
-   <repository-reference location="http://download.eclipse.org/releases/2019-09/" enabled="true" />
-   <repository-reference location="http://https://download.eclipse.org/lsp4e/releases/0.12.0/" enabled="true" />
+   <category-def name="deps" label="Dependencies"/>
+   <bundle id="org.eclipse.lsp4j">
+     <category name="deps"/>
+   </bundle>
+   <bundle id="org.eclipse.lsp4j.jsonrpc">
+     <category name="deps"/>
+   </bundle>
+   <bundle id="org.eclipse.lsp4j.debug">
+     <category name="deps"/>
+   </bundle>
+   <bundle id="org.eclipse.lsp4j.jsonrpc.debug">
+     <category name="deps"/>
+   </bundle>
+   <bundle id="org.eclipse.xtext.xbase.lib">
+     <category name="deps"/>
+   </bundle>
+   <bundle id="com.google.gson">
+     <category name="deps"/>
+   </bundle>
+   <bundle id="org.eclipse.lsp4e">
+      <category name="deps"/>
+   </bundle>
+   <bundle id="org.eclipse.lsp4e.debug">
+      <category name="deps"/>
+   </bundle>
 </site>
