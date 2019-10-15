@@ -2,7 +2,7 @@
 <feature
       id="lsp.scala.feature"
       label="Scala LSP Plugin"
-      version="0.1.2.qualifier"
+      version="0.1.2"
       provider-name="Idiomaticsoft S.R.L.">
 
    <description url="http://www.example.com/description">
