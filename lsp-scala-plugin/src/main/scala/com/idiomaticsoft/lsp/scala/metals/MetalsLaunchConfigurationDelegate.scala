@@ -22,6 +22,8 @@ import org.eclipse.core.resources.WorkspaceJob
 import org.eclipse.core.runtime.NullProgressMonitor
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry
+import org.eclipse.core.runtime.Platform
+import com.idiomaticsoft.lsp.scala.preferences.MetalsPreference
 
 class MetalsLaunchConfigurationDelegate extends JavaLaunchDelegate {
 
@@ -43,10 +45,14 @@ class MetalsLaunchConfigurationDelegate extends JavaLaunchDelegate {
     try {
       monitor.worked(1)
       val wc = configuration.getWorkingCopy()
+      val metalsVersion = Platform.getPreferencesService().getString(MetalsPreference.METALS_PREFERENCE, MetalsPreference.METALS_SEVER_VERSION, "latest.release", null)
       import coursier._
       val fetch = Fetch()
-        .addDependencies(dep"org.scalameta:metals_2.12:0.7.6")
-        .run()
+        .addDependencies(
+			Dependency(
+			 mod"org.scalameta:metals_2.12",
+			 metalsVersion
+			)).run()
       import collection.JavaConverters._
       val classPathElements = fetch
         .map(x => new Path(x.toPath.toString()))

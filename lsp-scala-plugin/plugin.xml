@@ -113,4 +113,12 @@
             restorable="true">
       </view>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="com.idiomaticsoft.lsp.scala.preferences.MetalsPreference"
+            id="lsp-scala-plugin.page1"
+            name="Metals preferences">
+      </page>
+   </extension>
 </plugin>
