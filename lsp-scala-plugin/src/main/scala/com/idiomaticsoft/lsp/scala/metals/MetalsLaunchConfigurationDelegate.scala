@@ -1,14 +1,14 @@
-/*******************************************************************************
- * Copyright (c) 2019 Idiomaticsoft S.R.L. and others.
- * This program and the accompanying materials are made
- * available under the terms of the APACHE LICENSE, VERSION 2.0
- * which is available at https://www.apache.org/licenses/LICENSE-2.0.txt
- *
- * SPDX-License-Identifier: Apache-2.0
- *
- * Contributors:
- *  Edmundo Lopez B. (Idiomaticsoft S.R.L.) - initial implementation
- *******************************************************************************/
+/** *****************************************************************************
+  * Copyright (c) 2019 Idiomaticsoft S.R.L. and others.
+  * This program and the accompanying materials are made
+  * available under the terms of the APACHE LICENSE, VERSION 2.0
+  * which is available at https://www.apache.org/licenses/LICENSE-2.0.txt
+  *
+  * SPDX-License-Identifier: Apache-2.0
+  *
+  * Contributors:
+  * Edmundo Lopez B. (Idiomaticsoft S.R.L.) - initial implementation
+  * ******************************************************************************/
 
 package com.idiomaticsoft.lsp.scala.metals
 
@@ -49,10 +49,16 @@ class MetalsLaunchConfigurationDelegate extends JavaLaunchDelegate {
       import coursier._
       val fetch = Fetch()
         .addDependencies(
-			Dependency(
-			 mod"org.scalameta:metals_2.12",
-			 metalsVersion
-			)).run()
+          Dependency(
+            mod"org.scalameta:metals_2.12",
+            metalsVersion
+          )
+        )
+        .addRepositories(
+          Repositories.sonatype("public"),
+          Repositories.sonatype("snapshots"),
+          Repositories.bintray("scalacenter", "releases")
+        ).run()
       import collection.JavaConverters._
       val classPathElements = fetch
         .map(x => new Path(x.toPath.toString()))

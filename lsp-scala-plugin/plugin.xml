@@ -118,7 +118,7 @@
       <page
             class="com.idiomaticsoft.lsp.scala.preferences.MetalsPreference"
             id="lsp-scala-plugin.page1"
-            name="Metals preferences">
+            name="Metals">
       </page>
    </extension>
 </plugin>
