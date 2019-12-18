@@ -33,6 +33,6 @@ class MetalsLanguageServerTabGroup extends AbstractLaunchConfigurationTabGroup {
       new EnvironmentTab()
     )
     import collection.JavaConverters._
-    setTabs(tabs)
+    setTabs(tabs:_*)
   }
 }
