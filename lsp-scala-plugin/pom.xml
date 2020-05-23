@@ -18,15 +18,15 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<scala.version>2.12.11</scala.version>
-		<maven.home>2.12.11</maven.home>
+		<scala.version>2.12.8</scala.version>
+		<maven.home>2.12.8</maven.home>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.scala-lang</groupId>
 			<artifactId>scala-library</artifactId>
-			<version>2.12.11</version>
+			<version>2.12.8</version>
 		</dependency>
 		<dependency>
 			<groupId>io.get-coursier</groupId>
@@ -74,7 +74,7 @@
 				            <version>4.3.12</version>
 				        </compilerPlugin>
 				    </compilerPlugins>
-            <scalaVersion>2.12.11</scalaVersion>
+            <scalaVersion>2.12.8</scalaVersion>
 					<args>
 				        <arg>-P:semanticdb:synthetics:on</arg>
 				        <arg>-P:semanticdb:failures:warning</arg>
