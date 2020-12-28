@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/lsp.scala.feature_0.3.2.jar" id="lsp.scala.feature" version="0.3.2">
+   <feature url="features/lsp.scala.feature_0.3.3.qualifier.jar" id="lsp.scala.feature" version="0.3.3.qualifier">
       <category name="com.idiomaticsoft.scala.lsp.category"/>
    </feature>
    <category-def name="com.idiomaticsoft.scala.lsp.category" label="Scala LSP Eclipse Plugin">
