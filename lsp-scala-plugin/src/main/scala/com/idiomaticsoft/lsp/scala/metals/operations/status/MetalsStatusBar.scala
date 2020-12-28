@@ -29,6 +29,7 @@ class MetalsStatusBar extends WorkbenchWindowControlContribution {
   var label: Label = _
 
   def createControl(composite: Composite): Control = {
+	composite.getParent().setRedraw(true)
     val layout = new FillLayout()
     layout.`type` = SWT.HORIZONTAL
     composite.setLayout(layout)
@@ -36,4 +37,8 @@ class MetalsStatusBar extends WorkbenchWindowControlContribution {
     label.setText(" " * 100)
     label
   }
+
+  override def isDynamic() = true
+
+	
 }
